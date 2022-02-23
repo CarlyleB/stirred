@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "esModuleInterop": true,
-      "jsx": "react",
+      "jsx": "react-jsx",
       "module": "esnext",
       "noImplicitAny": true,
       "outDir": "./build/",
@@ -29,7 +29,7 @@
       "noEmit": false
     },
     "include": [
-      "src/app/index.tsx", "src/app/index.html"
+      "src/index.tsx", "src/index.html"
     ],
     "exclude": [
       "node_modules",
