@@ -1,22 +1,28 @@
 import { Provider } from 'react-redux';
-import { DrinkList } from './components/drinks';
+import { combineReducers } from 'redux';
+import { IngredientList } from './components/ingredients';
 
 import { configureStore } from '@reduxjs/toolkit';
-import { drinksReducer, drinksApi } from './store';
+import { api, cocktailsReducer, ingredientsReducer } from './store';
 
 export const store = configureStore({
-    reducer: drinksReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(drinksApi)
+    reducer: combineReducers({
+        cocktails: cocktailsReducer,
+        ingredients: ingredientsReducer
+    }),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api)
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 
+console.log(store.getState());
+
 export const App = () => {
     return (
         <Provider store={store}>
-            <DrinkList />
+            <IngredientList />
         </Provider>
     );
 };

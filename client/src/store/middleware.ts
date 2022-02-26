@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
+import { AnyAction, Dispatch, Middleware } from 'redux';
 
 import * as actions from './actions';
 
-export const drinksApi: Middleware = ({ dispatch }) =>
+export const api: Middleware = ({ dispatch }) =>
     (next: Dispatch<AnyAction>) =>
     async (action: AnyAction) => {
         if (action.type !== actions.apiCallStarted.type) return next(action);
@@ -18,21 +18,17 @@ export const drinksApi: Middleware = ({ dispatch }) =>
         try {
             const response: AxiosResponse = await axios.request({
                 // baseURL: 'https://jsonplaceholder.typicode.com',
-                baseURL:'https://www.thecocktaildb.com/api',
+                baseURL:'http://localhost:3001',
                 // baseURL: 'https://www.thecocktaildb.com',
                 url,
                 method,
                 data,
             });
             // General
-            dispatch(actions.apiCallSucceeded(response.data.drinks.map((drink: any) => {
-                return { id: drink.idDrink, name: drink.strDrink, thumbnailUrl: drink.strDrinkThumb };
-            })));
+            dispatch(actions.apiCallSucceeded(response.data));
             // Specific
             if (onSuccess)
-                dispatch({ type: onSuccess, payload: response.data.drinks.map((drink: any) => {
-                    return { id: drink.idDrink, name: drink.strDrink, thumbnailUrl: drink.strDrinkThumb };
-                }) });
+                dispatch({ type: onSuccess, payload: response.data });
         } catch (error: any) {
             // General
             dispatch(actions.apiCallFailed(error.message));

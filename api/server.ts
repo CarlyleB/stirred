@@ -5,7 +5,9 @@ const cors = require('cors');
 const app = express();
 const apiKey = process.env.API_KEY;
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:8080'
+}));
 
 const baseUrl = `https://www.thecocktaildb.com/api/json/v2/${apiKey}`;
 
@@ -15,37 +17,94 @@ const submitRequest = (res, url) => {
         .catch(err => console.log(err));
 };
 
-// Search cocktail by name:             /search.php?s=margarita
-// List all cocktails by first letter:  /search.php?f=a
-// Search ingredient by name:           /search.php?i=vodka
-app.get('/search', (req, res) => {
-    let queryKey, queryVal;
-    if (req.query.cocktail) {
-        queryKey = 's';
-        queryVal = req.query.cocktail;
-    } else if (req.query.ingredient) {
-        queryKey = 'i';
-        queryVal = req.query.ingredient;
-    } else if (req.query.letter) {
-        queryKey = 'f';
-        queryVal = req.query.letter;
+app.get('/cocktails', (req, res) => {
+    if (req.query.ingredients) {
+        const url = `${baseUrl}/filter.php?i=${req.query.ingredients}`;
+        axios.get(url)
+        .then((response) => {
+            const cocktails = response.data.drinks.map((a) => {
+                return { id: a.idDrink, name: a.strDrink, thumbnailUrl: a.strDrinkThumb };
+            });
+            res.send(cocktails);
+        })
+        .catch(err => console.log(err));
+    } else {
+        res.send([]); // thecocktaildb doesn't have an endpoint for listing all cocktails
     }
-    const url = `${baseUrl}/search.php?${queryKey}=${queryVal}`; 
+});
+
+app.get('/cocktails/:cocktail', (req, res) => {
+    const url = `${baseUrl}/search.php?s=${req.params.cocktail}`;
+    axios.get(url)
+        .then((response) => {
+            const ingredientKeyPrefix = 'strIngredient';
+            const measurementKeyPrefix = 'strMeasure';
+            const maxIngredients = 15;
+            const getIngredients = (a) => {
+                const ingredients = [];
+                for (let i = 0; i < maxIngredients; i++) {
+                    ingredients.push({
+                        name: a[ingredientKeyPrefix + i],
+                        meaurement: a[measurementKeyPrefix + i]
+                    });
+                }
+            };
+            const cocktails = response.data.drinks.map((a) => {
+                return {
+                    id: a.idDrink,
+                    name: a.strDrink,
+                    tags: a.strTags ? a.strTags.split() : [],
+                    videoUrl: a.strVideo,
+                    category: a.strCategory,
+                    alcoholic: a.strAlcoholic,
+                    glass: a.strGlass,
+                    instructions: a.strInstructions,
+                    thumbnailUrl: a.strDrinkThumb,
+                    ingredients: getIngredients(a),
+                    imageSrc: a.strImageSource,
+                    imgAttribution: a.strImageAttribution,
+                    ccConfirmed: a.strCreativeCommonsConfirmed === 'Yes' ? true : false,
+                    dateModified: a.dateModified
+                }
+            });
+            res.send(cocktails);
+        })
+        .catch(err => console.log(err));
+});
+
+// List ingredients:                    /list.php?i=list
+app.get('/ingredients', (req, res) => {
+    const url = `${baseUrl}/list.php?i=list`;
+    axios.get(url)
+        .then((response) => {
+            const ingredients = response.data.drinks.map((a) => ( a.strIngredient1 ));
+            res.send(ingredients);
+        })
+        .catch(err => console.log(err));
+});
+
+app.get('/ingredients/:ingredient', (req, res) => {
+    const url = `${baseUrl}/search.php?s=${req.params.ingredient}`;
     submitRequest(res, url);
 });
 
-// Lookup full cocktail details by id:  /lookup.php?i=11007
-// Lookup ingredient by ID:             /lookup.php?iid=552
-app.get('/lookup', (req, res) => {
-    let queryKey, queryVal;
-    if (req.query.cocktailId) {
-        queryKey = 'i';
-        queryVal = req.query.cocktailId;
-    } else if (req.query.ingredientId) {
-        queryKey = 'iid';
-        queryVal = req.query.ingredientId;
-    }
-    const url = `${baseUrl}/lookup.php?${queryKey}=${queryVal}`
+// List categories:                     /list.php?c=list
+app.get('/categories', (req, res) => {
+    const url = `${baseUrl}/list.php?c=list`;
+    axios.get(url)
+        .then(response => res.send(response.data))
+        .catch(err => console.log(err));
+});
+
+// List glasses:                        /list.php?g=list
+app.get('/glasses', (req, res) => {
+    const url = `${baseUrl}/list.php?g=list`;
+    submitRequest(res, url);
+});
+
+// List alcoholic filters:              /list.php?a=list
+app.get('/types', (req, res) => {
+    const url = `${baseUrl}/list.php?a=list`;
     submitRequest(res, url);
 });
 
@@ -94,32 +153,6 @@ app.get('/filter', (req, res) => {
         queryVal = req.query.glass;
     }
     const url = `${baseUrl}/filter.php?${queryKey}=${queryVal}`;
-    submitRequest(res, url);
-});
-
-// List categories:                     /list.php?c=list
-app.get('/list/categories', (req, res) => {
-    const url = `${baseUrl}/list.php?c=list`;
-    axios.get(url)
-        .then(response => res.send(response.data))
-        .catch(err => console.log(err));
-});
-
-// List glasses:                        /list.php?g=list
-app.get('/list/glasses', (req, res) => {
-    const url = `${baseUrl}/list.php?g=list`;
-    submitRequest(res, url);
-});
-
-// List alcoholic filters:              /list.php?a=list
-app.get('/list/alcoholic', (req, res) => {
-    const url = `${baseUrl}/list.php?a=list`;
-    submitRequest(res, url);
-});
-
-// List ingredients:                    /list.php?i=list
-app.get('/list/ingredients', (req, res) => {
-    const url = `${baseUrl}/list.php?i=list`;
     submitRequest(res, url);
 });
 
