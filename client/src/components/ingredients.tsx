@@ -20,7 +20,6 @@ export const IngredientList: React.FC<IIngredientListProps> = ({onChange}) => {
         <div>
             <Autocomplete
                 multiple
-                id="tags-standard"
                 options={ingredients.sort()}
                 getOptionLabel={(option) => option}
                 groupBy={(option) => option.charAt(0)}
@@ -29,7 +28,7 @@ export const IngredientList: React.FC<IIngredientListProps> = ({onChange}) => {
                     <TextField
                         {...params}
                         variant="standard"
-                        label="Your ingredients"
+                        label="Ingredients"
                     />
                 )}
             />

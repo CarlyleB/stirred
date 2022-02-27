@@ -1,20 +1,17 @@
-import { CircularProgress, Paper } from '@mui/material';
-import { Box } from '@mui/system';
-import { useEffect } from 'react';
+import { CircularProgress } from '@mui/material';
+import {
+    Avatar,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText
+} from '@mui/material';
+import { Fragment, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { loadCocktails } from '../store';
 
-const thumbnailHeight: number = 128;
-
-const boxSx = {
-    display: 'flex',
-    '&:firstChild > :not(style)': {
-        m: 1,
-        width: thumbnailHeight,
-        height: thumbnailHeight,
-    },
-};
+const avatarWidth: number = 120;
 
 interface IDrinkListProps {
     ingredients: Array<string>;
@@ -30,19 +27,28 @@ export const DrinkList: React.FC<IDrinkListProps> = ({ingredients}) => {
     }, [ingredients]);
 
     return (
-        <div>
+        <div className='drinkListContainer'>
             {loadingDrinks && <CircularProgress />}
             {!loadingDrinks && !!ingredients.length && !drinks.length && <div>'No results'</div>}
-            {!!drinks.length && drinks.map((drink: any) => (
-                <div key={drink.id}>
-                    <Box sx={boxSx}>
-                        <Paper variant="outlined">
-                            <img src={drink.thumbnailUrl} height={thumbnailHeight}/>
-                        </Paper>
-                        <span>{drink.name}</span>
-                    </Box>
-                </div>
-            ))}
+            {!!drinks.length && <List sx={{ width: '100%', maxWidth: 800, bgcolor: 'background.paper' }}>
+                {drinks.map((drink: any) => (
+                    <div>
+                        <ListItem alignItems="flex-start">
+                            <ListItemAvatar sx={{ width: avatarWidth + 20, height: avatarWidth }}>
+                                <Avatar src={drink.thumbnailUrl} sx={{ width: avatarWidth, height: avatarWidth }} />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={drink.name}
+                                secondary={
+                                    <Fragment>
+                                        {} {/* TODO - ingredients list */}
+                                    </Fragment>
+                                }
+                            />
+                        </ListItem>
+                    </div>
+                ))}
+            </List>}
         </div>
     );
 };
