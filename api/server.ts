@@ -26,13 +26,14 @@ app.get('/cocktails', (req, res) => {
         const url = `${baseUrl}/filter.php?i=${req.query.ingredients}`;
         axios.get(url)
         .then((response) => {
-            const cocktails = response.data.drinks.map((a) => {
-                return {
-                    id: a.idDrink,
-                    name: capitalizeFirstLetter(a.strDrink),
-                    thumbnailUrl: a.strDrinkThumb
-                };
-            });
+            const cocktails = response.data.drinks === 'None Found' ? [] :
+                response.data.drinks.map((a) => {
+                    return {
+                        id: a.idDrink,
+                        name: capitalizeFirstLetter(a.strDrink),
+                        thumbnailUrl: a.strDrinkThumb
+                    };
+                });
             res.send(cocktails);
         })
         .catch(err => console.log(err));
@@ -67,7 +68,7 @@ app.get('/cocktails/:cocktail', (req, res) => {
                     alcoholic: a.strAlcoholic,
                     glass: a.strGlass,
                     instructions: a.strInstructions,
-                    thumbnailUrl: a.strDrinkThumb,
+                    thumbnailUrl: a.strDrinkThumb + '/preview',
                     ingredients: getIngredients(a),
                     imageSrc: a.strImageSource,
                     imgAttribution: a.strImageAttribution,
