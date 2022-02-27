@@ -17,13 +17,21 @@ const submitRequest = (res, url) => {
         .catch(err => console.log(err));
 };
 
+const capitalizeFirstLetter = (word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+};
+  
 app.get('/cocktails', (req, res) => {
     if (req.query.ingredients) {
         const url = `${baseUrl}/filter.php?i=${req.query.ingredients}`;
         axios.get(url)
         .then((response) => {
             const cocktails = response.data.drinks.map((a) => {
-                return { id: a.idDrink, name: a.strDrink, thumbnailUrl: a.strDrinkThumb };
+                return {
+                    id: a.idDrink,
+                    name: capitalizeFirstLetter(a.strDrink),
+                    thumbnailUrl: a.strDrinkThumb
+                };
             });
             res.send(cocktails);
         })
@@ -77,7 +85,7 @@ app.get('/ingredients', (req, res) => {
     const url = `${baseUrl}/list.php?i=list`;
     axios.get(url)
         .then((response) => {
-            const ingredients = response.data.drinks.map((a) => ( a.strIngredient1 ));
+            const ingredients = response.data.drinks.map((a) => (capitalizeFirstLetter(a.strIngredient1)));
             res.send(ingredients);
         })
         .catch(err => console.log(err));
