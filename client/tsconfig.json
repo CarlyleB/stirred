@@ -4,10 +4,12 @@
       "jsx": "react-jsx",
       "module": "esnext",
       "noImplicitAny": true,
+      "noImplicitThis": true,
       "outDir": "./build/",
       "preserveConstEnums": true,
       "removeComments": true,
       "sourceMap": true,
+      "strictNullChecks": true,
       "target": "es5",
       "typeRoots": [
         "src/typings",
@@ -16,6 +18,7 @@
       "lib": [
         "dom",
         "dom.iterable",
+        "es6",
         "esnext"
       ],
       "allowJs": true,

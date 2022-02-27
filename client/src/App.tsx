@@ -1,8 +1,8 @@
+import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { combineReducers } from 'redux';
-import { IngredientList } from './components/ingredients';
 
-import { configureStore } from '@reduxjs/toolkit';
+import { Search } from './components/search';
 import { api, cocktailsReducer, ingredientsReducer } from './store';
 
 export const store = configureStore({
@@ -22,7 +22,7 @@ console.log(store.getState());
 export const App = () => {
     return (
         <Provider store={store}>
-            <IngredientList />
+            <Search />
         </Provider>
     );
 };
