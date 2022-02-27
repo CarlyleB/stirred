@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 export const IngredientList: React.FC = () => {
     const dispatch = useAppDispatch();
-    const ingredients = useAppSelector((state: any) => state.ingredients.list);
+    const ingredients = useAppSelector((state: any) => [...state.ingredients.list]);
 
     useEffect(() => {
         dispatch(loadIngredients());
@@ -14,7 +14,7 @@ export const IngredientList: React.FC = () => {
         <div>
             <h1>Ingredients</h1>
             <ul>
-                {ingredients.map((ingredient: string, idx: number) => (
+                {ingredients.sort().map((ingredient: string, idx: number) => (
                     <li key={idx}>{ingredient}</li>
                 ))}
             </ul>
