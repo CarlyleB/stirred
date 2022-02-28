@@ -20,7 +20,7 @@ const submitRequest = (res, url) => {
 const capitalizeFirstLetter = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
 };
-  
+
 app.get('/cocktails', (req, res) => {
     if (req.query.ingredients) {
         const url = `${baseUrl}/filter.php?i=${req.query.ingredients}`;
@@ -86,7 +86,12 @@ app.get('/ingredients', (req, res) => {
     const url = `${baseUrl}/list.php?i=list`;
     axios.get(url)
         .then((response) => {
-            const ingredients = response.data.drinks.map((a) => (capitalizeFirstLetter(a.strIngredient1)));
+            const ingredients = response.data.drinks.map((a) => {
+                return {
+                    name: capitalizeFirstLetter(a.strIngredient1),
+                    thumbnailUrl: 'http://www.thecocktaildb.com/images/ingredients/' + a.strIngredient1 + '.png'
+                };
+            });
             res.send(ingredients);
         })
         .catch(err => console.log(err));

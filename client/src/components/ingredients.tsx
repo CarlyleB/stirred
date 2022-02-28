@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Avatar, Box, TextField } from '@mui/material';
 import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -20,10 +20,18 @@ export const IngredientList: React.FC<IIngredientListProps> = ({onChange}) => {
         <div>
             <Autocomplete
                 multiple
-                options={ingredients.sort()}
-                getOptionLabel={(option) => option}
-                groupBy={(option) => option.charAt(0)}
+                options={ingredients.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1)}
+                getOptionLabel={(option) => option.name}
+                groupBy={(option) => option.name.charAt(0)}
                 onChange={(_event, vals: Array<string>) => onChange(vals)}
+                renderOption={(props, option) => (
+                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                      <Avatar
+                        src={option.thumbnailUrl}
+                      />
+                      {option.name}
+                    </Box>
+                )}
                 renderInput={(params) => (
                     <TextField
                         {...params}

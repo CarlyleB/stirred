@@ -18,7 +18,7 @@ export const Search: React.FC = () => {
             <IngredientList
                 onChange={(vals: Array<string>) => setState({
                     ...state,
-                    selectedIngredients: vals
+                    selectedIngredients: vals.map((a: any) => a.name)
                 })}
             />
             <DrinkList ingredients={state.selectedIngredients}></DrinkList>
