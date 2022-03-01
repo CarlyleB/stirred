@@ -27,7 +27,7 @@ export const IngredientList: React.FC<IIngredientListProps> = ({onChange}) => {
                 renderOption={(props, option) => (
                     <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
                       <Avatar
-                        src={option.thumbnailUrl}
+                        src={option.thumbnailurl}
                       />
                       {option.name}
                     </Box>

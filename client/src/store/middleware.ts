@@ -18,7 +18,7 @@ export const api: Middleware = ({ dispatch }) =>
         try {
             const response: AxiosResponse = await axios.request({
                 // baseURL: 'https://jsonplaceholder.typicode.com',
-                baseURL:'http://localhost:3001',
+                baseURL:'http://localhost:3000',
                 // baseURL: 'https://www.thecocktaildb.com',
                 url,
                 method,

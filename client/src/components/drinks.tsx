@@ -20,7 +20,7 @@ interface IDrinkListProps {
 export const DrinkList: React.FC<IDrinkListProps> = ({ingredients}) => {
     const dispatch = useAppDispatch();
     const loadingDrinks = useAppSelector((state: any) => state.cocktails.loading);
-    const drinks = useAppSelector((state: any) => state.cocktails.list);
+    const drinks = useAppSelector((state: any) => [...state.cocktails.list]);
 
     useEffect(() => {
         dispatch(loadCocktails(ingredients));
@@ -32,16 +32,16 @@ export const DrinkList: React.FC<IDrinkListProps> = ({ingredients}) => {
             {!loadingDrinks && !!ingredients.length && !drinks.length && <div>'No results'</div>}
             {!!drinks.length && <List sx={{ width: '100%', maxWidth: 800, bgcolor: 'background.paper' }}>
                 {drinks.map((drink: any) => (
-                    <div>
+                    <div key={drink.id}>
                         <ListItem alignItems="flex-start">
                             <ListItemAvatar sx={{ width: avatarWidth + 20, height: avatarWidth }}>
-                                <Avatar src={drink.thumbnailUrl} sx={{ width: avatarWidth, height: avatarWidth }} />
+                                <Avatar src={drink.thumbnailurl} sx={{ width: avatarWidth, height: avatarWidth }} />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={drink.name}
                                 secondary={
                                     <Fragment>
-                                        {} {/* TODO - ingredients list */}
+                                        {drink.recipe.map((item: any) => <div>{item.ingredient}</div>)}
                                     </Fragment>
                                 }
                             />

@@ -29,7 +29,7 @@ export const cocktailsReducer = cocktailsSlice.reducer;
 
 const { cocktailsRequested, cocktailsReceived, cocktailsRequestFailed } = cocktailsSlice.actions;
 
-const url = '/cocktails';
+const url = '/drinks';
 
 export const loadCocktails = (ingredients: Array<string>) => (dispatch: Dispatch<{payload: CallStartedPayload}>) => {
     return dispatch(
