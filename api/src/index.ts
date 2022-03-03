@@ -1,24 +1,27 @@
 require('dotenv').config();
-const express = require('express')
-const cors = require('cors')
-const app = express()
-const port = 3000
 
-app.use(cors({
-    origin: '*'
-}))
+import * as cors from 'cors';
+import * as express from 'express';
+import { Request, Response } from 'express';
+
+const app = express();
+
+const { PORT = 3000 } = process.env;
+const allowedOrigins: Array<string> = ['http://localhost:8080'];
+
+app.listen(PORT, () => {
+  console.log(`App running on port ${PORT}.`);
+});
+
+app.use(cors({ origin: allowedOrigins }));
 
 app.use(express.json())
 app.use(express.urlencoded())
 
-app.listen(port, () => {
-    console.log(`App running on port ${port}.`)
-})
-
 const Pool = require('pg').Pool
 const pool = new Pool()
 
-const getDrinks = (req, res) => {
+const getDrinks = (req: Request, res: Response) => {
     const sql = req.query.ingredients
         ? `SELECT d.*,r FROM drinks d CROSS JOIN LATERAL json_array_elements (recipe::json) AS r where r->>\'ingredient\' =\'${req.query.ingredients}\';`
         : 'SELECT * FROM drinks ORDER BY name ASC';
@@ -31,29 +34,22 @@ const getDrinks = (req, res) => {
     })
 }
 
-const getIngredients = (_req, res) => {
+const getIngredients = (_req: Request, res: Response) => {
     pool.query('SELECT * FROM ingredients ORDER BY name ASC', (error, results) => {
         if (error) throw error
         res.status(200).json(results.rows)
     })
 }
 
-const getGlasses = (_req, res) => {
+const getGlasses = (_req: Request, res: Response) => {
     pool.query('SELECT * FROM glasses ORDER BY name ASC', (error, results) => {
         if (error) throw error
         res.status(200).json(results.rows)
     })
 }
 
-const getCategories = (_req, res) => {
+const getCategories = (_req: Request, res: Response) => {
     pool.query('SELECT * FROM categories ORDER BY name ASC', (error, results) => {
-        if (error) throw error
-        res.status(200).json(results.rows)
-    })
-}
-
-const getDrinksByIngredient = (req, res) => {
-    pool.query(`SELECT d.*,r FROM drinks d CROSS JOIN LATERAL json_array_elements (recipe::json) AS r where r->>\'ingredient\' =\'${req.query.ingredient}\';`, (error, results) => {
         if (error) throw error
         res.status(200).json(results.rows)
     })
