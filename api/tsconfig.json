@@ -1,5 +1,25 @@
 {
     "compilerOptions": {
-      "sourceMap": true
-    }
+        "esModuleInterop": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "outDir": "./build/",
+        "sourceMap": true,
+        "strictNullChecks": true,
+        "target": "es6",
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "typeRoots": [
+            "src/typings",
+            "./node_modules/@types"
+        ]
+    },
+    "include": [
+        "src/index.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "typings"
+    ]
 }
