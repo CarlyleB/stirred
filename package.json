@@ -1,4 +1,9 @@
 {
     "private": true,
-    "workspaces": ["api", "client"]
+    "workspaces": ["api", "client"],
+    "scripts": {
+        "start": "yarn start:client & yarn start:api",
+        "start:api": "cd api && yarn watch",
+        "start:client": "cd client && yarn watch"
+    }
 }
