@@ -36,7 +36,9 @@ module.exports = {
       onBuildStart:{
         scripts: ['echo "===> Starting packing with WEBPACK 5"']
       },
-      onBuildEnd: ['yarn run:dev']
+      onBuildEnd: {
+        scripts: ['yarn run:dev']
+      }
     })
   ]
 }
