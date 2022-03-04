@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 
 import { Search } from './components/search';
 import { api, cocktailsReducer, ingredientsReducer } from './store';
+import './App.css';
 
 export const store = configureStore({
     reducer: combineReducers({
@@ -21,8 +22,10 @@ console.log(store.getState());
 
 export const App = () => {
     return (
-        <Provider store={store}>
-            <Search />
-        </Provider>
+        <div className="appContainer">
+            <Provider store={store}>
+                <Search />
+            </Provider>
+        </div>
     );
 };
