@@ -1,9 +1,11 @@
+import { ThemeProvider } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { combineReducers } from 'redux';
 
 import { Search } from './components/search';
 import { api, cocktailsReducer, ingredientsReducer } from './store';
+import { baseTheme } from './theme';
 import './App.css';
 
 export const store = configureStore({
@@ -23,9 +25,11 @@ console.log(store.getState());
 export const App = () => {
     return (
         <div className="appContainer">
-            <Provider store={store}>
-                <Search />
-            </Provider>
+            <ThemeProvider theme={baseTheme}>
+                <Provider store={store}>
+                    <Search />
+                </Provider>
+            </ThemeProvider>
         </div>
     );
 };

@@ -1,15 +1,17 @@
+import {
+    Box,
+    Card,
+    CardContent,
+    CardHeader,
+    CardMedia,
+    CircularProgress,
+    Grid,
+    Typography
+} from '@mui/material';
 import { FC, useEffect } from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import { CircularProgress, Grid } from '@mui/material';
-import Typography from '@mui/material/Typography';
 
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { loadCocktails } from '../store';
-
-import './drinks.css';
 
 interface IDrinkListProps {
     ingredients: Array<string>;
@@ -28,28 +30,35 @@ export const DrinkList: FC<IDrinkListProps> = ({ingredients}) => {
         <div className='drinkListContainer'>
             {loadingDrinks && <CircularProgress />}
             {!loadingDrinks && !!ingredients.length && !drinks.length && <div>'No results'</div>}
-            {!!drinks.length && <Grid container spacing={5}>
-                {drinks.map((drink: any) => (
-                    <Grid item xs={3} key={drink.id}>
-                        <Card sx={{ maxWidth: 345 }}>
-                            <CardHeader
-                                title={drink.name}
-                                subheader=""
-                            />
-                            <CardMedia
-                                component="img"
-                                image={drink.thumbnailurl}
-                                alt={drink.name}
-                            />
-                            <CardContent>
-                                <Typography variant="body2" color="text.secondary">
-                                    {drink.recipe.map((item: any, idx: number) => <div key={idx}>{item.ingredient}</div>)}
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>}
+            {!!drinks.length && !loadingDrinks && <Box sx={{ flexGrow: 1 }}>
+                <Grid
+                    container
+                    direction="row"
+                    alignItems="flex-start"
+                    spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}
+                >
+                    {drinks.map((drink: any) => (
+                        <Grid item xs={2} sm={4} md={2} key={drink.id}>
+                            <Card>
+                                <CardHeader
+                                    title={drink.name}
+                                    subheader=""
+                                />
+                                <CardMedia
+                                    component="img"
+                                    image={drink.thumbnailurl}
+                                    alt={drink.name}
+                                />
+                                <CardContent>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {drink.recipe.map((item: any, idx: number) => <div key={idx}>{item.ingredient}</div>)}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>}
         </div>
     );
 };
