@@ -12,7 +12,6 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import { IngredientList } from './ingredients';
 
-
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -60,31 +59,31 @@ export interface ITopBarProps {
 const PrimarySearchAppBar: React.FC<ITopBarProps> = ({filterByIngredients}) => {
     return (
         <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-            <Toolbar>
-                <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{ display: { xs: 'none', sm: 'block' } }}
-                >
-                    S | S
-                </Typography>
-                <Search>
-                    <SearchIconWrapper>
-                    <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                        placeholder="Search…"
-                        inputProps={{ 'aria-label': 'search' }}
-                        onChange={(evt) => console.log(evt.target.value)}
-                    />
-                </Search>
-                <Box sx={{ flexGrow: 1 }}>
-                    <IngredientList onChange={filterByIngredients} />
-                </Box>
-            </Toolbar>
-        </AppBar>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{ display: { xs: 'none', sm: 'block' } }}
+                    >
+                        S | S
+                    </Typography>
+                    <Search>
+                        <SearchIconWrapper>
+                        <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Search…"
+                            inputProps={{ 'aria-label': 'search' }}
+                            onChange={(evt) => console.log(evt.target.value)}
+                        />
+                    </Search>
+                    <Box sx={{ flexGrow: 1 }}>
+                        <IngredientList onChange={filterByIngredients} />
+                    </Box>
+                </Toolbar>
+            </AppBar>
         </Box>
     );
 }

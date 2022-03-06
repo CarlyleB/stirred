@@ -22,10 +22,10 @@ export const Search: React.FC = () => {
     }
 
     return (
-        <div>
+        <Box sx={{ height: '100%' }}>
             <PrimarySearchAppBar filterByIngredients={setSelectedIngredients}></PrimarySearchAppBar>
             <Box sx={{height: 20}} />
             <DrinkList ingredients={state.selectedIngredients}></DrinkList>
-        </div>
+        </Box>
     );
 };

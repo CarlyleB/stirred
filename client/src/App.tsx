@@ -6,7 +6,6 @@ import { combineReducers } from 'redux';
 import { Search } from './components/search';
 import { api, cocktailsReducer, ingredientsReducer } from './store';
 import { baseTheme } from './theme';
-import './App.css';
 
 export const store = configureStore({
     reducer: combineReducers({
@@ -24,12 +23,10 @@ console.log(store.getState());
 
 export const App = () => {
     return (
-        <div className="appContainer">
-            <ThemeProvider theme={baseTheme}>
-                <Provider store={store}>
-                    <Search />
-                </Provider>
-            </ThemeProvider>
-        </div>
+        <ThemeProvider theme={baseTheme}>
+            <Provider store={store}>
+                <Search />
+            </Provider>
+        </ThemeProvider>
     );
 };

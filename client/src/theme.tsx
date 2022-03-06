@@ -1,7 +1,15 @@
 import { createTheme } from '@mui/material/styles';
 
 const baseTheme = createTheme({
-
+    palette: {
+        primary: {
+            main: '#E57538',
+            contrastText: '#fff'
+        },
+        text: {
+            primary: '#6C6465'
+        },
+    },
     components: {
         MuiAutocomplete: {
             styleOverrides: {

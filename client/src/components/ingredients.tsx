@@ -29,6 +29,7 @@ export const IngredientList: React.FC<IIngredientListProps> = ({onChange}) => {
                 options={ingredients.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1)}
                 getOptionLabel={(option) => option.name}
                 groupBy={(option) => option.name.charAt(0)}
+                autoHighlight={true}
                 onChange={(_event, vals: Array<string>) => {
                     console.log(vals)
                     onChange(vals)
