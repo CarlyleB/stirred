@@ -1,23 +1,44 @@
-import { CircularProgress } from '@mui/material';
 import {
-    Avatar,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText
+    Box,
+    Card,
+    CardContent,
+    CardHeader,
+    CardMedia,
+    CircularProgress,
+    Grid,
+    Stack,
+    Typography
 } from '@mui/material';
-import { Fragment, useEffect } from 'react';
+import { styled } from '@mui/system';
+import { FC, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { loadCocktails } from '../store';
 
-const avatarWidth: number = 120;
+const StyledCard = styled(Card)({
+    borderRadius: '15px'
+});
+
+const StyledCardHeader = styled(CardHeader)({
+    padding: '0px',
+    paddingTop: '10px',
+    textAlign: 'center',
+    fontSize: '1.1rem'
+});
+
+const StyledCardMedia = styled(CardMedia)({
+    border: '0.25px #d1c9ca solid',
+    borderTopRightRadius: '15px',
+    borderTopLeftRadius: '15px',
+    boxSizing: 'border-box',
+    objectFit: 'cover'
+}) as typeof CardMedia;
 
 interface IDrinkListProps {
     ingredients: Array<string>;
 }
 
-export const DrinkList: React.FC<IDrinkListProps> = ({ingredients}) => {
+export const DrinkList: FC<IDrinkListProps> = ({ingredients}) => {
     const dispatch = useAppDispatch();
     const loadingDrinks = useAppSelector((state: any) => state.cocktails.loading);
     const drinks = useAppSelector((state: any) => [...state.cocktails.list]);
@@ -27,28 +48,41 @@ export const DrinkList: React.FC<IDrinkListProps> = ({ingredients}) => {
     }, [ingredients]);
 
     return (
-        <div className='drinkListContainer'>
-            {loadingDrinks && <CircularProgress />}
+        <Box sx={{ height: '100%' }}>
+            {loadingDrinks && <Stack sx={{ height: '100%', alignItems: 'center', marginTop: '20%' }}>
+                <CircularProgress disableShrink />
+            </Stack>}
             {!loadingDrinks && !!ingredients.length && !drinks.length && <div>'No results'</div>}
-            {!!drinks.length && <List sx={{ width: '100%', maxWidth: 800, bgcolor: 'background.paper' }}>
-                {drinks.map((drink: any) => (
-                    <div key={drink.id}>
-                        <ListItem alignItems="flex-start">
-                            <ListItemAvatar sx={{ width: avatarWidth + 20, height: avatarWidth }}>
-                                <Avatar src={drink.thumbnailurl} sx={{ width: avatarWidth, height: avatarWidth }} />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={drink.name}
-                                secondary={
-                                    <Fragment>
-                                        {drink.recipe.map((item: any) => <div>{item.ingredient}</div>)}
-                                    </Fragment>
-                                }
-                            />
-                        </ListItem>
-                    </div>
-                ))}
-            </List>}
-        </div>
+            {!!drinks.length && !loadingDrinks && <Box sx={{ flexGrow: 1, marginLeft: '20px', marginRight: '20px' }}>
+                <Grid
+                    container
+                    direction="row"
+                    alignItems="flex-start"
+                    spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}
+                >
+                    {drinks.map((drink: any) => (
+                        <Grid item xs={2} sm={4} md={2} key={drink.id}>
+                            <StyledCard>
+                                <StyledCardMedia
+                                    component="img"
+                                    image={drink.thumbnailurl}
+                                    alt={drink.name}
+                                />
+                                <StyledCardHeader
+                                    title={drink.name}
+                                    subheader=""
+                                    sx={{ fontSize: '1.2rem' }}
+                                />
+                                <CardContent>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {drink.recipe.map((item: any, idx: number) => <div key={idx}>{item.ingredient}</div>)}
+                                    </Typography>
+                                </CardContent>
+                            </StyledCard>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>}
+        </Box>
     );
 };

@@ -1,7 +1,8 @@
+import { Box } from '@mui/material';
 import { useState } from 'react';
 
 import { DrinkList } from './drinks';
-import { IngredientList } from './ingredients';
+import { PrimarySearchAppBar } from './topBar';
 
 interface ISearchState {
     selectedIngredients: Array<string>;
@@ -13,15 +14,18 @@ export const Search: React.FC = () => {
         selectedIngredients: []
     });
 
+    const setSelectedIngredients = (ingredients: Array<any>) => {
+        setState({
+            ...state,
+            selectedIngredients: ingredients.map((a: any) => a.name)
+        });
+    }
+
     return (
-        <div>
-            <IngredientList
-                onChange={(vals: Array<string>) => setState({
-                    ...state,
-                    selectedIngredients: vals.map((a: any) => a.name)
-                })}
-            />
+        <Box sx={{ height: '100%' }}>
+            <PrimarySearchAppBar filterByIngredients={setSelectedIngredients}></PrimarySearchAppBar>
+            <Box sx={{height: 20}} />
             <DrinkList ingredients={state.selectedIngredients}></DrinkList>
-        </div>
+        </Box>
     );
 };
