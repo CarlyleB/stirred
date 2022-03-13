@@ -56,7 +56,7 @@ export interface ITopBarProps {
     filterByIngredients: (ingredients: Array<any>) => void;
 }
 
-const PrimarySearchAppBar: React.FC<ITopBarProps> = ({filterByIngredients}) => {
+const TopAppBar: React.FC = () => {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -80,7 +80,7 @@ const PrimarySearchAppBar: React.FC<ITopBarProps> = ({filterByIngredients}) => {
                         />
                     </Search>
                     <Box sx={{ flexGrow: 1 }}>
-                        <IngredientList onChange={filterByIngredients} />
+                        {/* <IngredientList onChange={filterByIngredients} /> */}
                     </Box>
                 </Toolbar>
             </AppBar>
@@ -88,4 +88,4 @@ const PrimarySearchAppBar: React.FC<ITopBarProps> = ({filterByIngredients}) => {
     );
 }
 
-export { PrimarySearchAppBar };
+export { TopAppBar };

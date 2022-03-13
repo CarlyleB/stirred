@@ -7,7 +7,7 @@ import {
 import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { loadIngredients } from '../store/slices/ingredients';
+import { fetchIngredients } from '../store/slices/ingredients';
 
 interface IIngredientListProps {
     onChange: (vals: Array<string>) => void;
@@ -18,7 +18,7 @@ export const IngredientList: React.FC<IIngredientListProps> = ({onChange}) => {
     const ingredients = useAppSelector((state: any) => [...state.ingredients.list]);
 
     useEffect(() => {
-        dispatch(loadIngredients());
+        dispatch(fetchIngredients());
     }, [dispatch]);
 
     return (

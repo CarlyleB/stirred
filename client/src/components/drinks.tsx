@@ -13,7 +13,7 @@ import { styled } from '@mui/system';
 import { FC, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { loadCocktails } from '../store';
+import { fetchDrinks } from '../store';
 
 const StyledCard = styled(Card)({
     borderRadius: '15px'
@@ -40,12 +40,12 @@ interface IDrinkListProps {
 
 export const DrinkList: FC<IDrinkListProps> = ({ingredients}) => {
     const dispatch = useAppDispatch();
-    const loadingDrinks = useAppSelector((state: any) => state.cocktails.loading);
-    const drinks = useAppSelector((state: any) => [...state.cocktails.list]);
+    const loadingDrinks = useAppSelector((state: any) => state.drinks.loading);
+    const drinks = useAppSelector((state: any) => [...state.drinks.list]);
 
     useEffect(() => {
-        dispatch(loadCocktails(ingredients));
-    }, [ingredients]);
+        dispatch(fetchDrinks(ingredients));
+    }, [[...ingredients]]);
 
     return (
         <Box sx={{ height: '100%' }}>

@@ -1,2 +1,2 @@
-export * from './cocktails';
+export * from './drinks';
 export * from './ingredients';
